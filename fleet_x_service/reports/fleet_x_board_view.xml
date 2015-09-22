@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	
+	
+
+	 <record model="ir.actions.act_window" id="action_fleet_alert_board">
+            <field name="name">Upcoming Servicing</field>
+            <field name="res_model">fleet.service.alert</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">calendar,form</field>
+            <field name="limit">7</field>
+            <field name="domain">[('state', '=', 'open')]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Vehicles with upcoming scheduled servicing is overdue are shown here
+              </p>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_fleet_alert_overdue_board">
+            <field name="name">Overdue servicing</field>
+            <field name="res_model">fleet.service.alert</field>
+            <field name="view_type">form</field>
+            <field name="limit">7</field>
+            <field name="domain">[('state', '=', 'overdue')]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Vehicles for which scheduled servicing is overdue are shown here
+              </p>
+            </field>
+        </record>
+
+		<!--My Dashboard -->
+		<record model="ir.ui.view" id="board_fleet_dash_view">
+			<field name="name">Fleet Dashboard</field>
+			<field name="model">board.board</field>
+			<field name="inherit_id" ref="fleet_x.board_fleet_dash_view" />
+			<field name="arch" type="xml">
+				<xpath expr="/form/board/column[2]" position="inside">
+					<action name="%(action_fleet_alert_board)d" string="Upcoming Vehicle Servicing"/>
+					<action name="%(action_fleet_alert_overdue_board)d" string="Overdue Vehicle Servicing"/>
+				</xpath>
+
+			</field>
+		</record>
+
+
+
+	</data>
+</openerp>

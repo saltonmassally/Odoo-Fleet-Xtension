@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+    	<record id="sequence_fuel_coupon" model="ir.sequence.type">
+		    <field name="name">Fuel Coupon</field>
+		    <field name="code">fleet.fuel.coupon.ref</field>
+		</record>
+	
+		<record id="sequence_fuel_coupon_seq" model="ir.sequence">
+		    <field name="name">Fuel Coupon</field>
+		    <field name="code">fleet.fuel.coupon.ref</field>
+		    <field name="prefix">FC-%(year)s-%(month)s-</field>
+		    <field name="padding">5</field>
+		</record>
+		
+		<record model="ir.cron" id="ir_cron_alert_update">
+            <field name="name">Issue Fuel Coupons</field>
+            <field name="interval_number">24</field>
+            <field name="interval_type">hours</field><!-- run every minute -->
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'fleet.vehicle'"/>
+            <field name="function" eval="'cron_issue_coupon'"/>
+            <field name="args" eval="'()'"/>
+        </record>
+        
+        <record model="ir.cron" id="ir_cron_expire_coupon">
+            <field name="name">Expire Fuel Coupons</field>
+            <field name="interval_number">24</field>
+            <field name="interval_type">hours</field><!-- run every minute -->
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'fleet.fuel.coupon'"/>
+            <field name="function" eval="'cron_expire_coupon'"/>
+            <field name="args" eval="'()'"/>
+        </record>
+    </data>
+</openerp>

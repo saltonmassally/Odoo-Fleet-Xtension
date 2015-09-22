@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record model='ir.ui.view' id='fleet_report_vehicle_issue_count_graph_main'>
+			<field name="name">report.vehicle.issue.tree</field>
+			<field name="model">report.vehicle.issue</field>
+			<field name="arch" type="xml">
+				<graph string="Issues by Vehicle" type="pivot">
+					<field name="vehicle_id" type="row"/>
+<!-- 					<field name="category_id" />
+					<field name="priority" />
+					<field name="vehicle_type_id" /> -->
+					<field name="date_open" interval="year" type="col"/>
+					<field name="nbr" operator="+" string="Issue Count" type="measure" />
+				</graph>
+			</field>
+		</record>
+		
+		<record id="fleet_report_vehicle_issue_filter" model="ir.ui.view">
+            <field name="name">report.vehicle.issue.filter</field>
+            <field name="model">report.vehicle.issue</field>
+            <field name="arch" type="xml">
+                <search string="Search Issues">
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_date" string="Date" icon="terp-personal" domain="[]" context="{'group_by':'date_open'}"/>
+                        <filter string="State" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Vehicle" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'vehicle_id'}"/>
+                        <filter string="Category" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'category_id'}"/>
+                        <filter string="Vehicle Type" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'vehicle_type_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+		<record model="ir.actions.act_window" id="action_fleet_report_vehicle_issue">
+			<field name="name">Vehicle Issues Analysis</field>
+			<field name="res_model">report.vehicle.issue</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">graph</field>
+			<field name="limit">7</field>
+			<field name="view_id" eval="fleet_report_vehicle_issue_count_graph_main" />
+		</record>
+		
+		<menuitem id="menu_fleet_reporting_issue_report" parent="fleet.menu_fleet_reporting"
+			action="action_fleet_report_vehicle_issue" sequence="25"
+			groups="fleet.group_fleet_user" />
+
+	</data>
+</openerp>

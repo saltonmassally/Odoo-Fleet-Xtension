@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+		<menuitem name="Fuel Center" parent="fleet.menu_root" id="fleet.fleet_fuel" sequence="2" groups="fleet.group_fleet_user"/>
+		<menuitem action="fleet.fleet_vehicle_log_fuel_act" parent="fleet.fleet_fuel" sequence="2" id="fleet.fleet_vehicle_log_fuel_menu" groups="fleet.group_fleet_user"/>
+		
+	<!-- fleet.vehicle.department -->
+        <record id="fleet_fuel_coupon_form" model="ir.ui.view">
+            <field name="name">fleet.fuel.coupon.form</field>
+            <field name="model">fleet.fuel.coupon</field>
+            <field name="arch" type="xml">
+                <form string="Fuel Coupon">
+                	<header>
+                        <button name="action_confirm" type="object" states="draft" groups="fleet.group_fleet_manager" string="Confirm" class="oe_highlight"/>
+                        <button name="action_print" type="object" states="active" groups="fleet.group_fleet_user" string="Print Coupon" class="oe_highlight"/>
+                        <button name="action_log_fuel" type="object" states="active" groups="fleet.group_fleet_user" string="Log Fuel Collected" class="oe_highlight"/>
+                        <button name="action_cancel" type="object" states="draft,active" groups="fleet.group_fleet_manager" string="Cancel"/>
+                        <button name="action_reset" type="object" states="done,cancel,expired" groups="fleet.group_fleet_manager" string="Set to Draft"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,active,done"/>
+                    </header>
+                    <sheet>
+                    	<div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name" class="oe_inline"/></h1>
+                            <label for="vehicle_id" class="oe_edit_only"/>
+                            <h4><field name="vehicle_id" options="{'no_create': True}"  attrs="{'readonly': [('state','!=', 'draft')]}"/> </h4>
+                        </div>
+                        <group>
+                        	<group>
+                        		<field name="code" groups="fleet.group_fleet_manager"/> 
+                        		<field name="fuel_type" attrs="{'readonly': [('state','!=', 'draft')]}"/> 
+                        		<field name="odometer" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                        		<field name="amount" attrs="{'readonly': [('state','!=', 'draft')]}"/> 
+                        		<field name="amount_remaining"/>
+                        		<field name="auto_generated"/>  
+                        	</group>
+                        	<group>
+                        		<field name="issued_on" attrs="{'readonly': [('state','!=', 'draft')]}"/> 
+                        		<label for="valid_from" string="Validity"/>
+                        		<div>
+	                                <group col="3">
+	                                    <field name="valid_from" nolabel="1" class="oe_inline" attrs="{'readonly': [('state','!=', 'draft')]}"/><label string="-" class="oe_inline"/>
+	                                    <field name="valid_to" nolabel="1" class="oe_inline" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+	                                </group>
+	                            </div>
+	                            <field name="delivered_on"/> 
+	                            <field name="vendor_id" attrs="{'readonly': [('state','!=', 'draft')]}"/> 
+                        	</group>                         
+                        </group>
+                        <notebook>
+                            <page string="Consumption Stats">
+                                <group>
+                                    <group string="Last Refuel">
+                                        <field name="stat_last_date"/> 
+                                        <field name="stat_last_liter"/>                                         
+                                    </group>
+                                    <group string="Efficiency">
+                                        <field name="stat_distance_delta"/> 
+                                        <field name="stat_efficiency"/> 
+                                        <field name="stat_average_efficiency"/> 
+                                    </group>
+                                </group>
+                                
+                            </page>
+                        	<page string="Fuel Logs">
+                        		<field name="log_fuel"/> 
+                        	</page>
+                        	<page string="Note">
+                        		<field name="note"/> 
+                        	</page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread" options='{"thread_level": 1}'/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="fleet_fuel_coupon_tree" model="ir.ui.view">
+            <field name="name">fleet.fuel.coupon.tree</field>
+            <field name="model">fleet.fuel.coupon</field>
+            <field name="arch" type="xml">
+                <tree string="Fuel Coupon">
+                    <field name="name"/>
+                    <field name="vehicle_id"/>
+                    <field name="valid_from"/>
+                    <field name="valid_to"/>
+                    <field name="amount"/>
+                    <field name="amount_remaining"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="fleet_fuel_coupon_filter" model="ir.ui.view">
+            <field name="name">Fuel Coupons</field>
+            <field name="model">fleet.fuel.coupon</field>
+            <field name="arch" type="xml">
+                <search string="Fuel Coupon">
+                    <field name="name"/>
+                    <field name="vehicle_id"/>
+                     <separator/>
+                    <filter name="source_manual" string="Manually Entered" domain="[('auto_generated','=',False)]"/>
+                    <filter name="source_automatic" string="Auto Generated" domain="[('auto_generated','=',True)]"/>
+                    <separator/>
+                    <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+                    <filter name="inprogress" string="In Progress" domain="[('state','in',('draft','active'))]"/>
+                     <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_valid_from" string="Date" icon="terp-personal" domain="[]" context="{'group_by':'valid_from'}"/>
+                        <filter name="group_vehicle" string="Vehicle" icon="terp-personal" domain="[]" context="{'group_by':'vehicle_id'}"/>
+                        <filter name="group_generated" string="Source" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'auto_generated'}"/>
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+             </field>
+        </record>
+        <record id="open_fleet_fuel_coupon" model="ir.actions.act_window">
+            <field name="name">Fuel Coupons</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fleet.fuel.coupon</field>
+            <field name="view_type">form</field>
+            <field name="view_type">form</field>
+            <field name="context">{'search_default_inprogress':True}</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+       <menuitem action="open_fleet_fuel_coupon" id="menu_fleet_fuel_coupon" parent="fleet.fleet_fuel" sequence="1" groups="fleet.group_fleet_user"/>
+       
+       
+       <record id="fleet_x_fuel_vehicle_form" model="ir.ui.view">
+			<field name="name">fleet.vehicle.form.inherit</field>
+			<field name="model">fleet.vehicle</field>
+			<field name="inherit_id" ref="fleet_x.fleet_x_vehicle_form" />
+			<field name="arch" type="xml">
+			         <group string="Cost Stats" position="after">
+			             <group string="Fuel Stats">                                   
+                                   <field name="last_fuel_id" />
+                                   <field name="last_fuel_date" />
+                                   <field name="last_fuel_distance" />                                   
+                                   <field name="last_fuel_liter" />
+                                   <field name="last_fuel_efficiency" />
+                                   <field name="km_per_lit" />
+                               </group>
+			         </group> 
+			
+					<page string="Policies" position="inside">
+						<group string="Fueling Policy">
+							<group>
+								<field name="fuel_frequency"/> 
+								<field name="fuel_amount"/> 
+							</group> 
+							<group>
+								<field name="next_coupon_issue"/> 
+							</group> 
+						</group> 
+					</page>
+               	
+               	<button name="action_get_attachment_tree_view" position="before">
+               		<button name="%(open_fleet_fuel_coupon)d"
+                    			context="{'search_default_vehicle_id': [active_id],'default_vehicle_id': active_id}"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-credit-card"
+                                >
+                                <field name="fuel_coupon_count" widget="statinfo" string="Fuel Coupons"/>
+                            </button>
+               	</button>
+			</field>
+		</record>
+        
+        <record id="fleet_vehicle_tree" model="ir.ui.view">
+        <field name="name">fleet.vehicle.tree.inherit</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet_x.fleet_vehicle_tree" />
+        <field name="arch" type="xml">
+            <field name="service_count" position="after">
+                <field name="fuel_litres_amount"/>
+                <field name="fuel_litres_cost"/>
+                <field name="km_per_lit"/>
+            </field>
+        </field>
+    </record>
+
+		<record id="fleet_vehicle_log_fuel_form" model="ir.ui.view">
+			<field name="name">fleet.vehicle.log.fuel.form.inherit</field>
+			<field name="model">fleet.vehicle.log.fuel</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_log_fuel_form" />
+			<field name="arch" type="xml">
+				<field name="vehicle_id" position="after">
+					<field name="coupon_id"/>
+				</field>
+				<field name="odometer" position="replace">
+					<field name="odometer" class="oe_inline" required="1"/>
+				</field>
+				
+				<field name="price_per_liter" position="replace">
+					<field name="price_per_liter" on_change="on_change_price_per_liter(liter,price_per_liter,amount)" required="1"/>
+				</field>
+				
+				<group string="Additional Details" position="after">
+				    <group string="Statistics">
+                        <field name="right_id" />
+                        <field name="end_odometer" />
+                        <field name="odometer_delta"/>
+                        <field name="efficiency" />
+                        <field name="efficiency_alert" attrs="{'invisible': [('efficiency_alert','!=', True)]}" />
+                        <field name="efficiency_alert_type" attrs="{'invisible': [('efficiency_alert','!=', True)]}"/>
+				    </group>
+				</group> 
+				
+			</field>
+		</record>
+
+    <record id="fleet_vehicle_log_fuel_tree" model="ir.ui.view">
+            <field name="name">fleet.vehicle.log.fuel.tree.inherit</field>
+            <field name="model">fleet.vehicle.log.fuel</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_log_fuel_tree" />
+            <field name="arch" type="xml">
+                <field name="amount" position="after">
+                    <field name="efficiency"/>
+                    <field name="efficiency_alert" invisible="1"/>
+                </field>
+                
+                <xpath expr="//tree[@string='Fuel Logs']" position="attributes">
+                            <attribute name="colors">red:efficiency_alert==True;</attribute>
+                        </xpath>
+               
+            </field>
+        </record>
+
+       <record id="fleet_x_vehicle_cost_form_inherit" model="ir.ui.view">
+                <field name="name">fleet.vehicle.cost.form.inherit</field>
+                <field name="model">fleet.vehicle.cost</field>
+                <field name="inherit_id" ref="fleet.fleet_vehicle_costs_form" />
+                <field name="arch" type="xml">
+                        <field name="vehicle_id" position="after">
+                                <field name="type_id" invisible="1" />
+
+                        </field>
+                 </field>
+        </record>
+        
+        <record id="fleet_x_vehicle_fuel_log_search" model="ir.ui.view">
+		<field name="name">fleet.vehicle.log.fuel.search.inherit</field>
+		<field name="model">fleet.vehicle.log.fuel</field>
+		<field name="inherit_id" ref="fleet.fleet_vehicle_log_fuel_search" />
+		<field name="arch" type="xml">
+		<field name="amount" position="after">
+		<seperator />
+		  <filter name="efficiency_alert" string="Alert" domain="[('efficiency_alert','=',True)]"/>
+		  <filter name="efficiency_alert_type_over" string="Over Utilized" domain="[('efficiency_alert_type','=', 'over')]"/>
+		  <filter name="efficiency_alert_type_under" string="Under Utilized" domain="[('efficiency_alert','=', 'under')]"/>
+		  <seperator />
+		</field>
+			<filter name="groupby_vehicle" position="after"> 
+             	<filter name="groupby_type" context="{'group_by': 'vehicle_type_id'}" string="Vehicle Type"/>
+             	<filter name="groupby_location" context="{'group_by': 'vehicle_location_id'}" string="Vehicle Location"/>
+             		<seperator />
+	          <filter name="groupby_month" context="{'group_by': 'date:month'}" string="Month" help="Consumption by Month"/>
+              <filter name="groupby_year" context="{'group_by': 'date:year'}" string="Year" help="Consumption by Year"/>
+			</filter> 
+		</field>
+	</record>
+	
+	<record model='ir.actions.act_window' id='fleet_vehicle_log_fuel_act_alert'>
+            <field name="name">Vehicles Fuel Logs</field>
+            <field name="res_model">fleet.vehicle.log.fuel</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="context">{"search_default_groupby_vehicle" : True, "search_default_efficiency_alert" : True}</field>
+        </record>
+        <menuitem action="fleet_vehicle_log_fuel_act_alert" name="Consumption Alerts" parent="fleet.fleet_fuel" sequence="3" id="fleet.fleet_vehicle_log_fuel_alert_menu" groups="fleet.group_fleet_user"/>
+
+	</data>
+</openerp>
+

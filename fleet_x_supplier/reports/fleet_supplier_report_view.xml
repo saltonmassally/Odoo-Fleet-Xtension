@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	
+	  <record id="report_fleet_supplier_tree" model="ir.ui.view">
+        <field name="name">Supplier Report</field>
+        <field name="model">report.fleet.supplier</field>
+        <field name="arch" type="xml">
+            <tree string="Supplier Report" create="0" delete="0">
+                <field name="vendor_id"/>
+                <field name="vehicle_id"/>
+                <field name="cost_type"/>
+                <field name="cost_subtype_id"/>
+                <field name="date"/>                
+                <field name="nbr" sum="Quantity "/>
+                <field name="amount" sum="Total Value"/>
+           </tree>
+        </field>
+    </record>
+
+		<record model='ir.ui.view' id='report_fleet_supplier_graph'>
+			<field name="name">report.fleet.supplier.tree</field>
+			<field name="model">report.fleet.supplier</field>
+			<field name="arch" type="xml">
+				<graph string="Fleet Suppliers" type="pivot">
+					<field name="vendor_id" type="row"/>
+					<field name="date" interval="month" type="col"/>
+					<field name="amount" operator="+" string="Amount" type="measure" />
+					<field name="nbr" type="measure" operator="+" string="Count"/>
+				</graph>
+			</field>
+		</record>
+		
+		<record id="report_fleet_supplier_filter" model="ir.ui.view">
+            <field name="name">report.fleet.supplier.filter</field>
+            <field name="model">report.fleet.supplier</field>
+            <field name="arch" type="xml">
+                <search string="Search Suppliers">
+                    <filter
+                        string="This Year"
+                        domain="[('date', '!=', False), ('date', '&gt;=', (context_today() - datetime.timedelta(365)).strftime('%%Y-%%m-%%d') )]"
+                        name="this_year"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Vendor" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'vendor_id'}"/>
+                        <filter string="Cost Category" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'cost_type'}"/>
+                        <filter string="Cost Type" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'cost_subtype_id'}"/>
+                        <filter name="group_date" string="Date" icon="terp-personal" domain="[]" context="{'group_by':'date'}"/>                        
+                    </group>
+                </search>
+            </field>
+        </record>
+
+		<record model="ir.actions.act_window" id="action_report_fleet_supplier">
+			<field name="name">Supplier Analysis</field>
+			<field name="res_model">report.fleet.supplier</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">graph</field>
+			<field name="context">{'search_default_this_year':1}</field>
+		</record>
+		
+		<menuitem id="menu_report_fleet_supplier" parent="fleet.menu_fleet_reporting"
+			action="action_report_fleet_supplier" sequence="27"
+			groups="fleet.group_fleet_user" />
+
+	</data>
+</openerp>

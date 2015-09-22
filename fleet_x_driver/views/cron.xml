@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data noupdate="0">
+
+    <!-- Cron -->
+        <record model="ir.cron" id="ir_cron_drvLic_update">
+            <field name="name">License Update</field>
+            <field name="active" eval="True" />
+	    <field name="interval_number">24</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'fleet.driver'"/>
+            <field name="function" eval="'_cron_drvLic_update'"/>
+            <field name="args" eval="'()'"/>
+        </record>
+
+
+    </data>
+</openerp>

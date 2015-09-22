@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_report_fleet_supplier_user,report_fleet_supplier.user,model_report_fleet_supplier,fleet.group_fleet_user,1,0,0,0
+access_report_fleet_supplier_manager,report_fleet_supplier.manager,model_report_fleet_supplier,fleet.group_fleet_manager,1,1,1,1

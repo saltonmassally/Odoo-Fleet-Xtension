@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+          <record model='ir.ui.view' id='fleet_vehicle_fuelkmpl_tree'>
+            <field name="name">fleet.vehicle.cost.tree</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="arch" type="xml">
+                <tree string="Vehicles" default_order="km_per_lit asc">
+                    <field name="name" />
+                    <field name="km_per_lit" />
+                </tree>
+            </field>
+        </record>
+        
+           <record model="ir.actions.act_window" id="action_fuelkmpl_most_board">
+            <field name="name">Top Fuel Consumers</field>
+            <field name="res_model">fleet.vehicle</field>
+            <field name="view_type">form</field>
+            <field name="limit">7</field>
+            <field name="context">{}</field>
+            <field name="view_id" eval="fleet_vehicle_fuelkmpl_tree"/>
+        </record>
+        
+        
+        My Dashboard
+        <record model="ir.ui.view" id="board_fleet_dash_view">
+            <field name="name">Fleet Dashboard</field>
+            <field name="model">board.board</field>
+            <field name="inherit_id" ref="fleet_x.board_fleet_dash_view" />
+            <field name="arch" type="xml">
+                <xpath expr="/form/board/column[3]" position="inside">
+                            <action name="%(action_fuelkmpl_most_board)d" string="Top Fuel Consumers"/>                   
+                </xpath>
+            </field>
+        </record>
+
+	</data>
+</openerp>

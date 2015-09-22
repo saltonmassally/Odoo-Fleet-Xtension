@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+    	<record id="sequence_schedule_alert" model="ir.sequence.type">
+		    <field name="name">Service Alert</field>
+		    <field name="code">fleet.service.alert.ref</field>
+		</record>
+	
+		<record id="sequence_schedule_alert_seq" model="ir.sequence">
+		    <field name="name">Service Alert Reference</field>
+		    <field name="code">fleet.service.alert.ref</field>
+		    <field name="prefix">ALRT/</field>
+		    <field name="padding">5</field>
+		</record>
+		
+		<record id="sequence_service_log_alert" model="ir.sequence.type">
+            <field name="name">Service Log</field>
+            <field name="code">fleet.service.log.ref</field>
+        </record>
+    
+        <record id="sequence_service_log_seq" model="ir.sequence">
+            <field name="name">Service Log Reference</field>
+            <field name="code">fleet.service.log.ref</field>
+            <field name="prefix">SRV/%(y)s/</field>
+            <field name="padding">5</field>
+        </record>
+		
+		<record model="ir.cron" id="ir_cron_alert_update">
+            <field name="name">Alert Update</field>
+            <field name="interval_number">24</field>
+            <field name="interval_type">hours</field><!-- run every minute -->
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'fleet.service.alert'"/>
+            <field name="function" eval="'_cron_update_state'"/>
+            <field name="args" eval="'()'"/>
+        </record>
+        
+        <record model="ir.cron" id="ir_cron_schedule_service">
+            <field name="name">Schedule Service</field>
+            <field name="interval_number">24</field>
+            <field name="interval_type">hours</field><!-- run every minute -->
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'fleet.vehicle'"/>
+            <field name="function" eval="'_cron_schedule_repairs'"/>
+            <field name="args" eval="'()'"/>
+        </record>
+    </data>
+</openerp>

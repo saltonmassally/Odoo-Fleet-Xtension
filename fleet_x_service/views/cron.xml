@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data noupdate="0">
+
+    <!-- Cron job to update Schedule alerts-->
+        <record model="ir.cron" id="ir_cron_alert_update1">
+            <field name="name">Service Schedule Alert</field>
+            <field name="active" eval="True" />
+	    <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field><!-- run every 1 hour -->
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'fleet.service.schedule.alert'"/>
+            <field name="function" eval="'_cron_alert_update'"/>
+            <field name="args" eval="'()'"/>
+        </record>
+
+
+    <!-- Cron job to apply schedules on vehicles and populate Alerts-->
+        <record model="ir.cron" id="ir_cron_alert_populate">
+            <field name="name">Service Schedule Alert Populate</field>
+            <field name="active" eval="True" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field><!-- run every 1 hour -->
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'fleet.service.schedule.alert'"/>
+            <field name="function" eval="'_cron_alert_populate'"/>
+            <field name="args" eval="'()'"/>
+        </record>
+
+
+
+    </data>
+</openerp>
+

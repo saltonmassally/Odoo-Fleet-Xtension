@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="view_wizard_report_fleet_supplier" model="ir.ui.view">
+			<field name="name">Supplier Payable Analysis</field>
+			<field name="model">wizard.report.fleet.supplier</field>
+			<field name="arch" type="xml">
+				<form string="Choose your period">
+					<p class="oe_gray" attrs="{'invisible': [('choose_date', '=', False)]}">
+						Choose the date for which you want to get a report for.
+					</p>
+					<p class="oe_gray" attrs="{'invisible': [('choose_date', '=', True)]}">
+						Retrieve all cost log for a supplier
+					</p>
+					<group>
+					   <group>
+					       <field name="vendor_id" />
+					       <field name="choose_date" />
+					   </group>
+					   <group>
+                            <label for="date_from" string="Period" />
+                        <div>
+                            <group col="3" attrs="{'invisible': [('choose_date', '=', False)]}">
+                                <field name="date_from" nolabel="1"
+                                    attrs="{'required':[('choose_date', '=', True)]}" class="oe_inline" />
+                                <label string="-" class="oe_inline" />
+                                <field name="date_to" nolabel="1"
+                                    attrs="{'required':[('choose_date', '=', True)]}" class="oe_inline" />
+                            </group>
+                        </div>
+                       </group>
+					</group>
+					<footer>
+						<button name="open_table" string="Retrieve Cost Logs" type="object"
+							class="oe_highlight" />
+						or
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		<record id="action_wizard_report_fleet_supplier" model="ir.actions.act_window">
+			<field name="name">Supplier Payable Analysis</field>
+			<field name="res_model">wizard.report.fleet.supplier</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_wizard_report_fleet_supplier" />
+			<field name="target">new</field>
+		</record>
+		<menuitem id="menu_action_wizard_report_fleet_supplier"
+			action="action_wizard_report_fleet_supplier" parent="fleet.menu_fleet_reporting"
+			sequence="26" />
+
+	</data>
+</openerp>
+

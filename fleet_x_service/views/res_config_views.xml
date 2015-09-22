@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record id="view_fleet_config_settings_inherit" model="ir.ui.view">
+			<field name="name">fleet settings</field>
+			<field name="model">fleet.config.settings</field>
+			<field name="inherit_id" ref="fleet_x.view_fleet_config_settings" />
+			<field name="arch" type="xml">
+				<group name="general" position="after">
+					<group>
+						<label for="id" string="Service Scheduling" />
+						<div>
+							<div>
+								<label for="default_repair_scheduling_interval" string="Scheduling Interval" />
+								<field name="default_repair_scheduling_interval" class="oe_inline" />
+							</div>
+							<div>
+								<label for="default_repair_scheduling_time" string="Interval (Mnths)" />
+								<field name="default_repair_scheduling_time" class="oe_inline" />
+							</div>
+							<div>
+								<label for="default_repair_scheduling_odometer" string="Interval (Odometer)" />
+								<field name="default_repair_scheduling_odometer" class="oe_inline" />
+							</div>
+							<div>
+								<label for="default_repair_scheduling_notice" string="Notice (Days)" />
+								<field name="default_repair_scheduling_notice" class="oe_inline" />
+							</div>
+						</div>
+					</group>
+
+				</group>
+			</field>
+		</record>
+	</data>
+</openerp>
