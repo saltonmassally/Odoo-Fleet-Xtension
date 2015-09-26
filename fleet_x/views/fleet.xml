@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<menuitem name="Configuration" parent="fleet.menu_root"
+			id="fleet.fleet_configuration" sequence="6" groups="fleet.group_fleet_manager" />
+		<menuitem action="fleet.fleet_vehicle_model_act" parent="fleet.fleet_configuration"
+			id="fleet.fleet_vehicle_model_menu" groups="fleet.group_fleet_manager" />
+		<menuitem action="fleet.fleet_vehicle_model_brand_act"
+			parent="fleet.fleet_configuration" id="fleet.fleet_vehicle_model_brand_menu"
+			groups="fleet.group_fleet_manager" />
+		<menuitem action="fleet.fleet_vehicle_service_types_act"
+			parent="fleet.fleet_configuration" id="fleet.fleet_vehicle_service_types_menu"
+			groups="fleet.group_fleet_manager" />
+
+        <!-- @todo is this necessary? -->
+		<record id="action_vehicle_kanban_view1" model="ir.actions.act_window.view">
+			<field eval="0" name="sequence" />
+			<field name="view_mode">kanban</field>
+			<field name="view_id" ref="fleet.fleet_vehicle_kanban" />
+			<field name="act_window_id" ref="fleet.fleet_vehicle_act" />
+		</record>
+
+		<record id="action_vehicle_tree_view1" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="fleet.fleet_vehicle_tree" />
+			<field name="act_window_id" ref="fleet.fleet_vehicle_act" />
+		</record>
+
+		<record id="action_vehicle_form_view1" model="ir.actions.act_window.view">
+			<field eval="2" name="sequence" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="fleet.fleet_vehicle_form" />
+			<field name="act_window_id" ref="fleet.fleet_vehicle_act" />
+		</record>
+
+
+		<record id="fleet_vehicle_form" model="ir.ui.view">
+			<field name="name">fleet.vehicle.form.inherit</field>
+			<field name="model">fleet.vehicle</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_form" />
+			<field name="arch" type="xml">
+
+				<field name="color" position="after">
+					<field name="fueltankcap" />
+					<field name="manufacture_year" />
+					<field name="ownership" />
+				</field>
+				<field name="acquisition_date" position="before">
+					<field name="odometer_date" />
+				</field>
+
+				<field name="driver_id" position="after">
+					<field name="department_id" />
+				</field>
+
+				<field name="location" position="replace">
+					<field name="location" invisible="1" />
+					<field name="location_id" />
+				</field>
+
+				<field name="driver_id" position="before">
+					<field name="type_id" />
+				</field>
+
+				<div class="oe_right oe_button_box" position="inside">	
+					<button name="action_get_attachment_tree_view" class="oe_stat_button attachment_2"
+						icon="fa-book" type="object">
+						<field name="attachment_count" widget="statinfo" string="Documents" />
+					</button>
+				</div>
+
+				<field name="acquisition_date" position="replace">
+					<field name="acquisition_date" invisible="1" />
+				</field>
+				<field name="car_value" position="replace">
+					<field name="car_value" invisible="1" />
+				</field>
+
+				<xpath expr="/form/sheet/group[position()=last()]" position="after">
+					<notebook>
+						<page string="Statistics">
+						<group>
+							<group col="2" string="Purchase Info">
+								<field name="ppartner" />
+								<field name="acquisition_date" required="1" />
+								<field name="car_value" />
+								<field name="podometer" required="1" />
+								<label for="warrexp" string="Warranty" />
+								<div>
+									<field name="warrexp" class="oe_inline" />
+									(date) or
+									<field name="warrexpmil" class="oe_inline" />
+									(distance)
+								</div>
+							</group>
+							<group col="2" string="Cost Stats">
+									<field name="costtotal" />
+									<field name="costpmon" />
+									<field name="costpm" />
+									<field name="distance" />
+									<field name="lmiles" />
+							</group>
+						</group>
+						</page>
+						<page string="Internal Note">
+							<field name="note" />
+						</page>
+						<page string="Policies">
+						</page>
+					</notebook>
+				</xpath>
+
+			</field>
+		</record>
+
+
+		<record id="fleet_vehicle_search" model="ir.ui.view">
+			<field name="name">fleet.vehicle.search.inherit</field>
+			<field name="model">fleet.vehicle</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_search" />
+			<field name="arch" type="xml">
+				<filter name="groupby_status" position="before">
+				    <filter name="groupby_type" context="{'group_by' : 'type_id'}"
+                        string="Type" />
+					<filter name="groupby_department" context="{'group_by' : 'department_id'}"
+						string="Department" />
+					<filter name="groupby_location" context="{'group_by' : 'location_id'}"
+						string="Location" />
+				</filter>
+			</field>
+		</record>
+
+		<record model='ir.ui.view' id='fleet_vehicle_kanban'>
+			<field name="name">fleet.vehicle.kanban</field>
+			<field name="model">fleet.vehicle</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_kanban" />
+			<field name="arch" type="xml">
+				<xpath expr="//ul/li[1]" position="after">
+					<li>
+						<t t-if="record.type_id.raw_value">
+							<field name="type_id" />
+						</t>
+					</li>
+					<li>
+						<t t-if="record.state_id.raw_value">
+							<field name="state_id" />
+						</t>
+					</li>
+				</xpath>
+			</field>
+		</record>
+
+
+		<!-- fleet.vehicle.department -->
+		<record id="view_department_form" model="ir.ui.view">
+			<field name="name">fleet.vehicle.department.form</field>
+			<field name="model">fleet.vehicle.department</field>
+			<field name="arch" type="xml">
+				<form string="Department">
+					<sheet>
+						<div class="oe_title">
+							<label for="name" class="oe_edit_only" />
+							<h1>
+								<field name="name" class="oe_inline" />
+							</h1>
+						</div>
+						<div class="oe_right oe_button_box">
+							<button name="%(fleet.fleet_vehicle_act)d"
+								context="{'search_default_department_id': [active_id],'default_department_id': active_id}"
+								type="action" class="oe_stat_button" icon="fa-car">
+								<field name="vehicle_count" widget="statinfo" string="Vehicles" />
+							</button>
+						</div>
+						<group>
+							<group>
+								<field name="parent_id" options="{'no_create': True}" />
+							</group>
+
+						</group>
+						<notebook>
+							<page string="Description">
+								<field name="note" />
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		<record id="view_department_tree" model="ir.ui.view">
+			<field name="name">fleet.vehicle.department.tree</field>
+			<field name="model">fleet.vehicle.department</field>
+			<field name="field_parent">child_ids</field>
+			<field name="arch" type="xml">
+				<tree string="Departments">
+					<field name="display_name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="open_module_tree_department" model="ir.actions.act_window">
+			<field name="name">Departments</field>
+			<field name="res_model">fleet.vehicle.department</field>
+			<field name="view_type">form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to create a department.
+				</p>
+				<p>
+					Fleet department structure is used to manage departments
+					that vehicles are assigned to
+				</p>
+			</field>
+		</record>
+		<menuitem action="open_module_tree_department" id="menu_department_tree"
+			parent="fleet.fleet_configuration" sequence="5" />
+
+
+		<record id="view_location_tree" model="ir.ui.view">
+			<field name="name">fleet.vehicle.location.tree</field>
+			<field name="model">fleet.vehicle.location</field>
+			<field name="arch" type="xml">
+				<tree string="Operational Location" editable="top">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="open_module_tree_location" model="ir.actions.act_window">
+			<field name="name">Operational Location</field>
+			<field name="res_model">fleet.vehicle.location</field>
+			<field name="view_type">form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to create a location/deployment
+				</p>
+			</field>
+		</record>
+		<menuitem action="open_module_tree_location" id="menu_vehicle_location"
+			parent="fleet.fleet_configuration" sequence="6" />
+
+
+		<record id="view_vehicle_type_tree" model="ir.ui.view">
+			<field name="name">fleet.vehicle.type.tree</field>
+			<field name="model">fleet.vehicle.type</field>
+			<field name="arch" type="xml">
+				<tree string="Vehicle Type" editable="top">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="open_module_tree_vehicle_type" model="ir.actions.act_window">
+			<field name="name">Vehicle Types</field>
+			<field name="res_model">fleet.vehicle.type</field>
+			<field name="view_type">form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to create a vehicle type.
+				</p>
+				<p>
+					Vehicle types e.g. cars, trucks, etc
+				</p>
+			</field>
+		</record>
+		<menuitem action="open_module_tree_vehicle_type" id="menu_vehicle_type_tree"
+			parent="fleet.fleet_configuration" sequence="6" />
+
+
+		<!--Overriding log contract filter -->
+
+		<record id="view_res_contract_filter" model="ir.ui.view">
+			<field name="name">fleet.vehicle.log.contract.select</field>
+			<field name="model">fleet.vehicle.log.contract</field>
+			<field name="arch" type="xml">
+				<search string="Search Contracts">
+					<field name="name" />
+					<field name="vehicle_id" />
+					<field name="insurer_id" />
+					<separator />
+					<filter icon="terp-camera_test" domain="[('state','=','open')]"
+						string="In-Process." name="open" />
+					<filter icon="terp-camera_test" domain="[('state','=','closed')]"
+						string="Closed" name="terminated" />
+					<filter icon="terp-camera_test" domain="[('state','=','toclose')]"
+						string="To Close" name="toclose" />
+
+
+					<separator />
+					<group expand="0" string="Group By">
+						<filter string="Vehicle" context="{'group_by': 'vehicle_id'}" />
+						<filter string="Supplier" context="{'group_by': 'insurer_id'}" />
+						<filter string="Type" context="{'group_by': 'cost_subtype_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		
+		<record model='ir.ui.view' id='fleet_vehicle_log_services_search'>
+			<field name="name">fleet.vehicle.log.services.search</field>
+			<field name="model">fleet.vehicle.log.services</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_log_services_search" />
+			<field name="arch" type="xml">
+				<field name="vehicle_id" position="after">
+					<field name="vendor_id" />
+				</field>
+				<field name="cost_subtype_id" position="after">
+					<group expand="0" string="Group By">
+						<filter name="groupby_vendor" context="{'group_by' : 'vendor_id'}"
+							string="Vendor" />
+						<filter name="groupby_vehicle" context="{'group_by' : 'vehicle_id'}"
+							string="Vehicle" />
+					</group>
+
+				</field>
+			</field>
+		</record>
+
+		<record id="fleet_vehicle_cost_tree" model="ir.ui.view">
+			<field name="name">fleet.vehicle.cost.tree.inherit</field>
+			<field name="model">fleet.vehicle.cost</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_cost_tree" />
+			<field name="arch" type="xml">
+				<field name="date" position="after">
+					<field name="amount" />
+				</field>
+				<field name="vehicle_id" position="before">
+                    <field name="ref" />
+                </field>
+			</field>
+		</record>
+		
+		<record model='ir.ui.view' id='fleet_vehicle_costs_form'>
+            <field name="name">fleet.vehicle.cost.form</field>
+            <field name="model">fleet.vehicle.cost</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_costs_form" />
+            <field name="arch" type="xml">
+                <field name="vehicle_id" position="before">
+                    <field name="ref" readonly="1"/>
+                </field>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='fleet_vehicle_costs_search'>
+            <field name="name">fleet.vehicle.cost.search</field>
+            <field name="model">fleet.vehicle.cost</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_costs_search" />
+            <field name="arch" type="xml">
+                <field name="vehicle_id" position="before">
+                    <field name="name" string="Employees" filter_domain="['|',('ref','ilike',self),('name','ilike',self)]"/>
+                </field>
+            </field>
+        </record>
+        
+        
+	</data>
+</openerp>
+

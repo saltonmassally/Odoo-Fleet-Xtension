@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+        <menuitem name="Suppliers" parent="fleet.menu_root" id="fleet.fleet_supplier" sequence="5" groups="fleet.group_fleet_user"/>
+       <menuitem action="base.action_partner_supplier_form" id="fleet_supplier" parent="fleet.fleet_supplier" sequence="1"/>
+       
+        
+    <record id="fleet_vehicle_log_fuel_tree" model="ir.ui.view">
+        <field name="name">fleet.vehicle.log.fuel.tree.inherit</field>
+        <field name="model">fleet.vehicle.log.fuel</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_fuel_tree" />
+        <field name="arch" type="xml">
+            <field name="purchaser_id" position='replace'>
+                <field name="purchaser_id" invisible="1" />
+            </field> 
+            <field name="vendor_id" position='replace'>
+                <field name="vendor_id" />
+            </field>       
+            
+        </field>
+    </record>
+       
+       <record model='ir.ui.view' id='fleet_vehicle_log_fuel_search'>
+            <field name="name">fleet.vehicle.log.fuel.search</field>
+            <field name="model">fleet.vehicle.log.fuel</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_log_fuel_search" />
+            <field name="arch" type="xml">
+                <field name="vehicle_id" position="after">
+                    <field name="vendor_id" />
+                </field>
+                <group string="Group By" position="inside">
+                    <filter name="groupby_vendor" context="{'group_by' : 'vendor_id'}"
+                        string="Vendor" />
+                </group>
+            </field>
+        </record>
+        
+
+	</data>
+</openerp>
+

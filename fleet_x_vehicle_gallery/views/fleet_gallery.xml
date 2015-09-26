@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record id="fleet_vehicle_gallery_tree" model="ir.ui.view">
+			<field name="name">fleet.vehicle.gallery.tree</field>
+			<field name="model">fleet.vehicle.gallery</field>
+			<field name="arch" type="xml">
+				<tree string="Galleries">
+					<field name="name" />
+					<field name="front_view" widget='image' height="150px" />
+					<field name="left_side_view" widget='image' height="150px" />
+					<field name="right_side_view" widget='image' height="150px" />
+					<field name="rear_view" widget='image' height="150px" />
+					<field name="odometer_view" widget='image' height="150px" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="fleet_vehicle_gallery_form" model="ir.ui.view">
+			<field name="name">fleet.vehicle.gallery.form</field>
+			<field name="model">fleet.vehicle.gallery</field>
+			<field name="arch" type="xml">
+				<form string="Gallery">
+					<sheet>
+						<group cols="4">
+							<field name="name" required="1" />
+						</group>
+						<group cols="4">
+							<field name="front_view" widget='image' />
+						</group>
+						<group cols="4">
+							<field name="left_side_view" widget='image' />
+						</group>
+						<group cols="4">
+							<field name="right_side_view" widget='image' />
+						</group>
+						<group cols="4">
+							<field name="rear_view" widget='image' />
+						</group>
+						<group cols="4">
+							<field name="odometer_view" widget='image' />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_fleet_vehicle_gallery_filter" model="ir.ui.view">
+			<field name="name">fleet.vehicle.gallery.filter</field>
+			<field name="model">fleet.vehicle.gallery</field>
+			<field name="arch" type="xml">
+				<search string="Search Galaries">
+					<field name="name" />
+					<field name="vehicle_id" />
+				</search>
+			</field>
+		</record>
+
+		<record id="open_fleet_vehicle_gallery" model="ir.actions.act_window">
+			<field name="name">Vehicle Gallery</field>
+			<field name="res_model">fleet.vehicle.gallery</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<record id="fleet_vehicle_form" model="ir.ui.view">
+			<field name="name">fleet.vehicle.form.inherit</field>
+			<field name="model">fleet.vehicle</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_form" />
+			<field name="arch" type="xml">
+				<div class="oe_right oe_button_box" position="inside">
+					<button name="%(open_fleet_vehicle_gallery)d"
+						context="{'search_default_vehicle_id': [active_id],'default_vehicle_id': active_id}"
+						type="action" class="oe_stat_button" icon="fa-picture-o">
+						<field name="gallery_count" widget="statinfo" string="Galleries" />
+					</button>
+				</div>
+
+			</field>
+		</record>
+
+
+	</data>
+</openerp>
+

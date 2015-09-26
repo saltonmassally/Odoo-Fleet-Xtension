@@ -24,7 +24,7 @@
 			<field name="arch" type="xml">
 				<graph string="Fleet Suppliers" type="pivot">
 					<field name="vendor_id" type="row"/>
-					<field name="date" interval="month" type="col"/>
+					<field name="date" interval="year" type="col"/>
 					<field name="amount" operator="+" string="Amount" type="measure" />
 					<field name="nbr" type="measure" operator="+" string="Count"/>
 				</graph>

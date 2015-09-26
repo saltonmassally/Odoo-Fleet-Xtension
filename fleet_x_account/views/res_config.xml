@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record id="view_fleet_config_settings_inherit" model="ir.ui.view">
+			<field name="name">fleet settings</field>
+			<field name="model">fleet.config.settings</field>
+			<field name="inherit_id" ref="fleet_x.view_fleet_config_settings" />
+			<field name="arch" type="xml">
+				<group name="general" position="after">
+					<group>
+						<label for="id" string="Accounting Defaults" />
+						<div>
+							<div>
+								<label for="default_analytic_account_id" string="Analytic Account" />
+								<field name="default_analytic_account_id" class="oe_inline" />
+							</div>
+							<div>
+								<label for="default_account_debit" string="Debit Account" />
+								<field name="default_account_debit" class="oe_inline" />
+							</div>
+							<div>
+								<label for="default_account_credit" string="Credit Account" />
+								<field name="default_account_credit" class="oe_inline" />
+							</div>
+							<div>
+								<label for="default_journal_id" string="Journal" />
+								<field name="default_journal_id" class="oe_inline" />
+							</div>
+						</div>
+					</group>
+
+				</group>
+			</field>
+		</record>
+	</data>
+</openerp>

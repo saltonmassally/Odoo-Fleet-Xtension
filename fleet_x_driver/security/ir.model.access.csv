@@ -1,5 +1,5 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 "access_fleet_x_fleet_driver","fleet_x.fleet_driver","model_fleet_driver","fleet.group_fleet_user",1,0,0,0
 "access_fleet_x_fleet_driver","fleet_x.fleet_driver","model_fleet_driver","fleet.group_fleet_manager",1,1,1,1
-"access_fleet_x_driver_assign","fleet_x.fleet_x_driver_assign","model_fleet_driver_assignment","fleet.group_fleet_user",1,0,0,0
+"access_fleet_x_driver_assign","fleet_x.fleet_x_driver_assign","model_fleet_driver_assignment","fleet.group_fleet_user",1,1,1,0
 "access_fleet_x_driver_assign","fleet_x.fleet_x_driver_assign","model_fleet_driver_assignment","fleet.group_fleet_manager",1,1,1,1

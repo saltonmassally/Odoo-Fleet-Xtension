@@ -1,19 +1,9 @@
 "id","name","model_id/id","group_id/id","perm_read","perm_write","perm_create","perm_unlink"
 "fleet_vehicle_department_access_right_user","fleet_vehicle_department_access_right","model_fleet_vehicle_department","fleet.group_fleet_user",1,0,0,0
 "fleet_vehicle_department_access_right","fleet_vehicle_department_access_right","model_fleet_vehicle_department","fleet.group_fleet_manager",1,1,1,1
-"fleet_vehicle_issue_access_right_user","fleet_vehicle_issue_access_right","model_fleet_vehicle_issue","fleet.group_fleet_user",1,1,1,0
-"fleet_vehicle_issue_access_right","fleet_vehicle_issue_access_right","model_fleet_vehicle_issue","fleet.group_fleet_manager",1,1,1,1
 "fleet_vehicle_type_access_right_user","fleet_vehicle_type_access_right","model_fleet_vehicle_type","fleet.group_fleet_user",1,0,0,0
 "fleet_vehicle_type_access_right","fleet_vehicle_type_access_right","model_fleet_vehicle_type","fleet.group_fleet_manager",1,1,1,1
 "fleet_vehicle_location_access_right_user","fleet_vehicle_location_access_right","model_fleet_vehicle_location","fleet.group_fleet_user",1,0,0,0
 "fleet_vehicle_location_access_right","fleet_vehicle_location_access_right","model_fleet_vehicle_location","fleet.group_fleet_manager",1,1,1,1
-"fleet_vehicle_gallery_access_right_user","fleet_vehicle_gallery_access_right","model_fleet_vehicle_gallery","fleet.group_fleet_user",1,0,0,0
-"fleet_vehicle_gallery_access_right","fleet_vehicle_gallery_access_right","model_fleet_vehicle_gallery","fleet.group_fleet_manager",1,1,1,1
-"fleet_report_vehicle_cost_access_right_user","fleet_report_vehicle_cost_access_right","model_report_vehicle_cost","fleet.group_fleet_user",1,0,0,0
-"fleet_report_vehicle_cost_access_right","fleet_report_vehicle_cost_access_right","model_report_vehicle_cost","fleet.group_fleet_manager",1,1,1,1
-"fleet_report_vehicle_issue_access_right_user","fleet_report_vehicle_issue_access_right","model_report_vehicle_issue","fleet.group_fleet_user",1,0,0,0
-"fleet_report_vehicle_issue_access_right","fleet_report_vehicle_issue_access_right","model_report_vehicle_issue","fleet.group_fleet_manager",1,1,1,1
-"fleet_report_fleet_vehicle_odometer_access_right_user","fleet_report_fleet_vehicle_odometer_access_right","model_report_fleet_vehicle_odometer","fleet.group_fleet_user",1,0,0,0
-"fleet_report_fleet_vehicle_odometer_access_right","fleet_report_fleet_vehicle_odometer_access_right","model_report_fleet_vehicle_odometer","fleet.group_fleet_manager",1,1,1,1
 fleet.fleet_vehicle_log_services_access_right_user,fleet.fleet_vehicle_log_services_access_right,fleet.model_fleet_vehicle_log_services,fleet.group_fleet_user,1,1,1,0
 

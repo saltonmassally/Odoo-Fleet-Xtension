@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+    	
+      		
+      <record id="issue_type_damage_report" model="fleet.vehicle.issue.category">
+          	<field name="name">Damage Report</field>
+      		</record>
+
+
+    </data>
+</openerp>
+

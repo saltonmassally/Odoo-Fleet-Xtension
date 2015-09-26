@@ -1,20 +1,17 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Fleet Xtenson",
-    'summary': "This is an extension of default Fleet Management module",
+    'name': "Fleet Xtenson - Vehicle Gallery",
+    'summary': "Gallery that shows damages overtime",
     'author': "Salton Massally <smassally@idtlabs.sl>",
     'website': "http://idtlabs.sl",
     'category': 'Managing vehicles and contracts',
     'version': '0.1',
-    'depends': ['fleet', ],
+    'depends': ['fleet_x', 'web_tree_image'],
     'data': [
-        'data/fleet_data.xml',
         'security/ir.model.access.csv',
-        'views/fleet.xml',
-        'views/res_config.xml',
-        'views/fleet_board_view.xml',
-       
+        'views/fleet_gallery.xml',
     ],
+
     'installable': True
 
 }

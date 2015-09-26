@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+    	<record id="sequence_vehicle_cost" model="ir.sequence.type">
+		    <field name="name">Cost Reference</field>
+		    <field name="code">fleet.vehicle.cost.ref</field>
+		</record>
+	
+		<record id="sequence_vehicle_cost_seq" model="ir.sequence">
+		    <field name="name">Cost Reference</field>
+		    <field name="code">fleet.vehicle.cost.ref</field>
+		    <field name="padding">5</field>
+		</record>
+		
+		<record id="vehicle_type_car" model="fleet.vehicle.type">
+            <field name="name">Car</field>
+        </record>
+        
+        <record id="vehicle_type_truck" model="fleet.vehicle.type">
+            <field name="name">Truck</field>
+        </record>
+        
+        <record id="vehicle_type_van" model="fleet.vehicle.type">
+            <field name="name">Van</field>
+        </record>
+        
+        <record id="vehicle_type_bus" model="fleet.vehicle.type">
+            <field name="name">Bus</field>
+        </record>
+        
+        <record id="vehicle_type_motorcycle" model="fleet.vehicle.type">
+            <field name="name">Motorcycle</field>
+        </record>
+        
+        <record id="vehicle_type_generator" model="fleet.vehicle.type">
+            <field name="name">Generator</field>
+        </record>
+        
+        <record id="vehicle_location_main" model="fleet.vehicle.location">
+            <field name="name">Head Quarters</field>
+        </record>
+
+         <record id="type_contract_registration" model="fleet.service.type">
+            <field name="name">Registration</field>
+            <field name="category">contract</field>
+            </record>
+
+            <record id="type_contract_insurance" model="fleet.service.type">
+            <field name="name">Insurance</field>
+             <field name="category">contract</field>
+            </record>
+
+    </data>
+</openerp>

@@ -27,27 +27,6 @@ from openerp.report import report_sxw
 import base64
 import logging
 
-try:
-    from reportlab.graphics.barcode import createBarcodeDrawing
-except:
-    _logger = logging.getLogger(__name__)
-    _logger.info("ERROR IMPORTING REPORT LAB")
-
-def get_barcode_image(self, value, width=False, hight=False, hr=True, code='QR'):
-        """ genrating image for barcode """
-        options = {}
-        if width:
-            options['width'] = width
-        if hight:
-            options['hight'] = hight
-        if hr:
-            options['humanReadable'] = hr
-        try:
-            ret_val = createBarcodeDrawing(code, value=str(value), **options)
-        except Exception, e:
-            raise osv.except_osv('Error', e)
-        return base64.encodestring(ret_val.asString('jpg'))
-
 class fuel_coupon_report(report_sxw.rml_parse):
     
     def __init__(self, cr, uid, name, context):
@@ -66,13 +45,8 @@ class fuel_coupon_report(report_sxw.rml_parse):
             'time': time,
             'partner': partner or False,
             'user': user or False,
-            'barcode': self.render_image,
         })
-    
-    
-    def render_image(self, barcode):
-        barcode = get_barcode_image(value=barcode, code='QR')
-        return barcode
+
 
 class wrapped_report_fuel_coupon(osv.AbstractModel):
     _name = 'report.fleet_x_fuel.report_fuel_coupon'

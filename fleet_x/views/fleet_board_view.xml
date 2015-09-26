@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record model='ir.ui.view' id='fleet_vehicle_costmon_tree'>
+			<field name="name">fleet.vehicle.cost.tree</field>
+			<field name="model">fleet.vehicle</field>
+			<field name="arch" type="xml">
+				<tree string="Vehicles" default_order="costpmon desc">
+					<field name="name" />
+					<field name="costpmon" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_costmon_most_board">
+			<field name="name">Most Expensive</field>
+			<field name="res_model">fleet.vehicle</field>
+			<field name="view_type">form</field>
+			<field name="limit">7</field>
+			<field name="context">{}</field>
+			<field name="view_id" eval="fleet_vehicle_costmon_tree" />
+		</record>
+
+		<record model='ir.ui.view' id='fleet_vehicle_costkm_tree'>
+			<field name="name">fleet.vehicle.cost.tree</field>
+			<field name="model">fleet.vehicle</field>
+			<field name="arch" type="xml">
+				<tree string="Vehicles" default_order="costpm desc">
+					<field name="name" />
+					<field name="costpm" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_costkm_most_board">
+			<field name="name">Most Expensive</field>
+			<field name="res_model">fleet.vehicle</field>
+			<field name="view_type">form</field>
+			<field name="limit">7</field>
+			<field name="context">{}</field>
+			<field name="view_id" eval="fleet_vehicle_costkm_tree" />
+		</record>
+
+		<!--My Dashboard -->
+		<record model="ir.ui.view" id="board_fleet_dash_view">
+			<field name="name">Fleet Dashboard</field>
+			<field name="model">board.board</field>
+			<field name="arch" type="xml">
+				<form string="Fleet Dashboard">
+					<board style="1-1-1">
+						<column>
+						</column>
+						<column>
+
+						</column>
+						<column>
+
+							<action name="%(action_costkm_most_board)d" string="Operational Cost Analysis - Cost per KM" />
+							<action name="%(action_costmon_most_board)d" string="Operational Cost Analysis - Cost per Month" />
+
+						</column>
+
+					</board>
+				</form>
+			</field>
+		</record>
+
+		<!--My Dashboard Action -->
+		<record model="ir.actions.act_window" id="open_board_fleet_dash_action">
+			<field name="name">Fleet Statistics</field>
+			<field name="res_model">board.board</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="usage">menu</field>
+			<field name="view_id" ref="board_fleet_dash_view" />
+			<field name="help" type="html">
+				<div class="oe_empty_custom_dashboard">
+					<p>
+						<b>The fleet dashboard is empty.</b>
+					</p>
+					<p>
+						To add your first report into this dashboard, go to any
+						menu,
+						switch to list or graph view, and click
+						<i>'Add to
+							Dashboard'
+						</i>
+						in the extended search options.
+					</p>
+					<p>
+						You can filter and group data before inserting into the
+						dashboard using the search options.
+					</p>
+				</div>
+			</field>
+		</record>
+
+		<!--My Dashboard Menu -->
+		<menuitem id="menu_board_fleet_dash" parent="base.menu_reporting_dashboard"
+			action="open_board_fleet_dash_action" sequence="6" />
+	</data>
+</openerp>

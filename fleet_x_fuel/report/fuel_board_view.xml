@@ -23,7 +23,6 @@
         </record>
         
         
-        My Dashboard
         <record model="ir.ui.view" id="board_fleet_dash_view">
             <field name="name">Fleet Dashboard</field>
             <field name="model">board.board</field>

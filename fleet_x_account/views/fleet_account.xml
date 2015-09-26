@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model='ir.ui.view' id='fleet_vehicle_service_types_form'>
+            <field name="name">fleet.service.type.form</field>
+            <field name="model">fleet.service.type</field>
+            <field name="inherit_id" ref="fleet_x_service.fleet_vehicle_service_types_form"/>
+            <field name="arch" type="xml">
+                <group name="primary" position="after">
+                   <group string="Accounting">
+                        <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                        <field name="account_debit"/>
+                        <field name="account_credit"/>
+                        <field name="journal_id"/>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+   
+    </data>
+</openerp>
