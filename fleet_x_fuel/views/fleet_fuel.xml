@@ -253,7 +253,7 @@
 			<field name="inherit_id" ref="fleet.fleet_vehicle_costs_form" />
 			<field name="arch" type="xml">
 				<field name="vehicle_id" position="after">
-					<field name="type_id" invisible="1" />
+					<field name="vehicle_type_id" invisible="1" />
 
 				</field>
 			</field>
